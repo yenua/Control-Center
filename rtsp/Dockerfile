@@ -15,12 +15,15 @@ RUN apt-get install ffmpeg -y
 RUN apt-get install net-tools -y
 
 COPY ./mediamtx_v1.3.1_linux_amd64 /rtsp
-COPY start.sh /etc/init.d
 
 WORKDIR /rtsp
 
-#CMD ["/bin/sh"]
-# RUN ./mediamtx &
+RUN ./mediamtx &
+
+RUN sleep 5
+
+RUN nohup ffmpeg -re -stream_loop -1 -i caverion_smartcity_cityview_v2_2.mp4 -c copy -f rtsp rtsp://localhost:60554/live &
+
 # RUN ffmpeg -re -stream_loop -1 -i caverion_smartcity_cityview_v2_2.mp4 -c copy -f rtsp rtsp://localhost:8554/live
 # RUN nohup ffmpeg -re -stream_loop -1 -i caverion_smartcity_cityview_v2_2.mp4 -c copy -f rtsp rtsp://localhost:8554/live &
 

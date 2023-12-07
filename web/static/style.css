@@ -5,6 +5,11 @@ body {
   font: normal 3vw/1 "Montserrat", sans-serif;
   text-align: center;
   text-transform: uppercase;
+s
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 h1 {
@@ -47,4 +52,24 @@ h1 {
   background: linear-gradient(to top, rgba(250, 173, 158, 0.3) 0%, rgba(194, 41, 10, 0.1) 100%);
   border-radius: 40% 40% 60% 60%;
   transition: opacity 200ms;
+}
+.container {
+  text-align: center;
+}
+.image-and-button {
+  display: flex;
+  align-items: center;
+}
+.image-and-button img {
+  width: 70%;
+  margin-right: 20px; /* 이미지와 텍스트 사이 간격 조정 */
+margin-left: 200px
+}
+.button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.button-container h6 {
+  margin: 0; /* 텍스트의 상단/하단 여백 제거 */
 }
