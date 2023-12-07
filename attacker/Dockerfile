@@ -6,9 +6,11 @@ ENV TZ=Asia/Seoul
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
 
 RUN apt-get update -y
+RUN apt-get upgrade -y
 
 RUN apt-get install -y net-tools
-RUN apt-get install iputils-ping
+RUN apt-get install -y iputils-ping
 
 RUN apt-get install -y nmap
 RUN apt-get install -y dsniff
+RUN apt-get install -y fragrouter
