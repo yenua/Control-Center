@@ -5,11 +5,12 @@ body {
   font: normal 3vw/1 "Montserrat", sans-serif;
   text-align: center;
   text-transform: uppercase;
-s
+/* 
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  */
 }
 
 h1 {
