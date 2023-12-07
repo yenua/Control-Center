@@ -1,14 +1,14 @@
-FROM kalilinux/kali-rolling
+FROM dorowu/ubuntu-desktop-lxde-vnc
 
 ENV TZ=Asia/Seoul
 
-RUN apt-get update
+# InRelease: The following signatures couldn't be verified because the public key is not available: NO_PUBKEY 4EB27DB2A3B88B8B 오류 해결용
+RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
 
-# nmap 포함 칼리 추천 상위 10개 도구 설치
-RUN apt-get install -y kali-tools-top10
+RUN apt-get update -y
 
-# 데스크탑 환경 설치
-RUN apt-get install -y  kali-desktop-xfce
+RUN apt-get install -y net-tools
+RUN apt-get install iputils-ping
 
-# VNC 서버 설치
-RUN apt-get install -y tightvncserver
+RUN apt-get install -y nmap
+RUN apt-get install -y dsniff

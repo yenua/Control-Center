@@ -12,7 +12,6 @@ ENV TZ=Asia/Seoul
 # -y 옵션 : 설치 확인 여부를 yes로 자동 설정
 RUN apt-get update
 RUN apt-get install ffmpeg -y
-RUN apt-get install net-tools -y
 
 COPY ./mediamtx_v1.3.1_linux_amd64 /rtsp
 
