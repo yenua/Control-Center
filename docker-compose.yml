@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  control-center-rtsp:
+    build: ./rtsp
+    image: "control-center-rtsp"
+    ports:
+      - "60554:60554"
+    tty: true
+    networks:
+        default_bridge:
+          ipv4_address: 172.36.0.2
+
+  control-center-web:
+    build: ./web
+    image: "control-center-web"
+    ports:
+      - "60080:5000"
+    tty: true
+    depends_on:
+      - "control-center-rtsp"
+    networks:
+        default_bridge:
+          ipv4_address: 172.36.0.3
+
+networks:
+  default_bridge:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.36.0.0/24
