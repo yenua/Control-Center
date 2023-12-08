@@ -4,7 +4,18 @@ Discription
 -------------
 XX 관제센터에서 XX을 관제하고 있다. 관제센터 직원들이 사고 발생을 알아차리지 못하도록 데이터를 변조하라!
 
-http://{서버용 PC IP}:60080
+[접속정보]  
+http://{서버용 PC IP}:60080  
+VNC : {서버용 PC IP}:5900  
+VNC password : yamang
+
+환경 구성
+-------------
+1. 도커 컴포즈 파일이 있는 곳에서 아래 명령어를 입력하여 도커를 띄운다.  
+docker-compose up --build --force-recreate -d
+2. rtsp 서버 도커에서 아래 명령어를 입력한다.  
+./start.sh
+3. 웹 사이트 및 vnc로 접속되는지 확인한다.
 
 write-up
 -------------
