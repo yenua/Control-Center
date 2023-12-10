@@ -1,0 +1,70 @@
+
+			      ==========
+
+			      fragrouter
+
+			      ==========
+
+What is fragrouter?
+-------------------
+
+Fragrouter is a network intrusion detection evasion toolkit. It
+implements most of the attacks described in the Secure Networks
+"Insertion, Evasion, and Denial of Service: Eluding Network Intrusion
+Detection" paper of January 1998.
+
+This program was written in the hopes that a more precise testing
+methodology might be applied to the area of network intrusion
+detection, which is still a black art at best. 
+
+Conceptually, fragrouter is just a one-way fragmenting router - IP
+packets get sent from the attacker to the fragrouter, which transforms
+them into a fragmented data stream to forward to the victim.
+
+             attack                  fragmented attack 
+   +-------+        +------------+                      +--------+
+   | hax0r |------->| fragrouter |- - - - - - - - - - ->| victim |
+   +-------+        +------------+           |          +--------+
+                                             V
+       	                              +------+------+
+                                      | network IDS |
+                                      +-------------+
+
+Most network IDSs fall victim to this attack-hiding technique because
+they don't bother to reconstruct a coherent view of the network data
+(via IP fragmentation and TCP stream reassembly).
+
+What systems does fragrouter support?
+-------------------------------------
+
+Fragrouter is fairly portable, relying on libpcap and libnet for
+packet capture and raw IP packet construction.
+
+Fragrouter has been successfully tested on
+
+	- OpenBSD 2.x
+	- FreeBSD 3.x
+	- BSD/OS 3.x
+	- Redhat Linux 5.x
+	- Solaris 2.x
+
+Who can use fragrouter?
+-----------------------
+
+Fragrouter is licensed under a BSD-style license, as in the included
+LICENSE file. Please read the license to make sure it's okay to use it
+in your circumstances.
+
+Contact info?
+-------------
+
+The primary fragrouter site is 
+
+	http://www.anzen.com/research/nidsbench/
+
+Please send bug reports, comments, or questions about this software to
+<nidsbench@anzen.com>.
+
+
+---
+$Id: README,v 1.15 1999/07/29 15:52:32 dugsong Exp $

@@ -1,0 +1,75 @@
+# Makefile for fragrouter.
+#
+# Dug Song <dugsong@anzen.com>
+#
+# $Id: Makefile.in,v 1.10 1999/06/22 19:24:22 dugsong Exp $
+
+srcdir		= @srcdir@
+VPATH		= @srcdir@
+
+install_prefix	=
+prefix		= @prefix@
+exec_prefix	= @exec_prefix@
+sbindir		= @sbindir@
+man8dir		= @mandir@/man8
+
+CC		= @CC@
+CFLAGS		= @CFLAGS@ $(PCAPINCS) $(LNETINCS)
+LDFLAGS		= @LDFLAGS@
+LIBS		= $(PCAPLIBS) $(LNETLIBS) @LIBS@
+
+INSTALL		= @INSTALL@
+INSTALL_PROGRAM	= @INSTALL_PROGRAM@
+INSTALL_DATA	= @INSTALL_DATA@
+
+PCAPDIR		= $(srcdir)/libpcap-0.4
+PCAPINCS	= -I$(PCAPDIR)
+PCAPLIBS	= -L$(PCAPDIR) -lpcap
+PCAPDEP		= $(PCAPDIR)/pcap.h $(PCAPDIR)/libpcap.a
+
+LNETDIR		= $(srcdir)/Libnet-0.99b
+LNETINCS	= -I$(LNETDIR)/include
+LNETLIBS	= -L$(LNETDIR)/lib -lnet
+LNETDEP		= $(LNETDIR)/include/libnet.h $(LNETDIR)/libnet.a
+
+SRCS		= attack.c fragrouter.c ip_frag.c list.c misc.c print.c \
+		  send.c sniff.c tcp_seg.c
+OBJS		= attack.o fragrouter.o ip_frag.o list.o misc.o print.o \
+		  send.o sniff.o tcp_seg.o
+
+all: fragrouter
+
+fragrouter: $(PCAPDEP) $(LNETDEP) $(OBJS)
+	$(CC) -o $@ $(OBJS) $(LDFLAGS) $(LIBS)
+
+$(PCAPDEP):
+	cd $(PCAPDIR); $(MAKE)
+
+$(LNETDEP):
+	cd $(LNETDIR); $(MAKE)
+
+install: all
+	$(srcdir)/mkinstalldirs $(install_prefix)$(sbindir)
+	$(srcdir)/mkinstalldirs $(install_prefix)$(man8dir)
+	$(INSTALL_PROGRAM) -m 755 fragrouter $(install_prefix)$(sbindir)
+	$(INSTALL_DATA) fragrouter.8 $(install_prefix)$(man8dir)
+
+uninstall:
+	rm -f $(install_prefix)$(sbindir)/fragrouter
+	rm -f $(install_prefix)$(mandir)/fragrouter.8
+
+clean:
+	rm -f *~ *.o fragrouter
+
+distclean: clean
+	cd $(PCAPDIR); $(MAKE) distclean
+	cd $(LNETDIR); $(MAKE) distclean
+	rm -f Makefile config.h config.status config.cache config.log
+
+depend:
+	makedepend -- $(CFLAGS) -- $(SRCS)
+
+version.h: VERSION
+	echo "#define FRAGROUTER_VERSION \"`cat VERSION`\"" > $@
+
+# DO NOT DELETE THIS LINE - make depend depends on it.

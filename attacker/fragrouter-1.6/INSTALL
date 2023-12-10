@@ -1,0 +1,81 @@
+
+Building fragrouter
+-------------------
+
+To build fragrouter on a supported platform:
+
+	% ./configure ; make
+
+If you get it to work on a platform not listed above, please let us
+know!
+
+Installing fragrouter
+---------------------
+
+To install fragrouter, as root:
+
+	# make install
+
+This will install the fragrouter binary and man page (by default,
+/usr/local/sbin/fragrouter and /usr/local/man/man8/fragrouter.8).
+
+Running fragrouter
+------------------
+
+Fragrouter can not be used to fragment traffic originating from the
+same machine on which it runs. This is by design, to help prevent
+abuse of this software.
+
+To fragment all attacks going from host hax0r to host victim, via
+fragrouter running on host middleman, do the following:
+
+1. On host hax0r, set a host route to victim through middleman:
+
+	# route add victim middleman
+	add host victim: gateway middleman
+
+2. Start fragrouter running on host middleman:
+
+	# fragrouter -F1
+	fragrouter: frag-1 started
+
+3. Send attacks normally from hax0r to victim. Fragrouter on middleman
+   will accept traffic from hax0r, fragment it, and forward the
+   transformed stream to victim. The return path will NOT go through
+   the fragrouter.
+
+4. To stop fragrouter, hit ^C (control-c).
+
+Known Problems
+--------------
+
+Fragrouter will NOT fragment traffic originating from the host it's
+running on. This was a conscious design decision, to help prevent
+abuse of this software.
+
+Fragrouter and the attacking machine need to be on the same network
+segment (behind a router), while the victim host needs to be on a
+separate network entirely. This is because the route from the attacker
+to the victim is asymmetric when fragrouter is running.
+
+The machine running fragrouter should not be running a sniffer (or any
+other program which sets the interface in promiscuous mode). Although
+fragrouter will still work, the latency in resending packets will be
+much worse.
+
+This is only proof-of-concept test code. Works for me. YMMV.
+
+Troubleshooting
+---------------
+
+Fragrouter will print a tcpdump-style output line for every
+packet/fragment it forwards. If you aren't seeing ANY output,
+fragrouter isn't accepting any packets.
+
+To aid in debugging, recompile fragrouter with -DDEBUG added to the
+CFLAGS line of the auto-generated top-level Makefile. This will make
+fragrouter's output a bit more verbose.
+
+
+---
+$Id: INSTALL,v 1.8 1999/05/27 04:18:45 dugsong Exp $

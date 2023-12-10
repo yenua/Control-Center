@@ -1,0 +1,753 @@
+.\"
+.\" $Id: libnet.3,v 1.1.1.1 1999/05/18 15:33:41 dugsong Exp $
+.\"
+.\" Copyright (c) 1998, 1999 Mike D. Schiffman <mike@infonexus.com> 
+.\"                          route|daemon9 <route@infonexus.com>
+.\"
+.\"
+.TH LIBNET 3  "23 Apr 1999" "libnet .99" ""
+.SH NAME
+libnet \- "libpwrite" Network Routine Library
+
+.SH DESCRIPTION
+The Network Library provides a simple API for commonly used low-level network
+functions (mainly packet shifting).  Using libnet, it is easy to build and
+write arbitrary network packets.  It provides a portable framework for
+low-level network packet writing and handling (use libnet in conjunction
+with libpcap and you can write some really cool stuff).  Libnet includes
+packet creation at the IP layer and at the link layer as well as a host of
+supplementary and complementary functionality.
+
+.SH SYNOPSIS
+.nf
+.ft B
+#include <libnet.h>
+.ft
+.LP
+.ft B
+
+
+PACKET MEMORY MANAGEMENT ROUTINES
+
+int libnet_init_packet(size_t p_size, u_char **buf);
+
+void libnet_destroy_packet(u_char *buf);
+
+int libnet_init_packet_arena(struct libnet_arena **arena, u_short p_num,
+.ti +8
+    u_short p_size);
+  
+u_char *libnet_next_packet_from_arena(struct libnet_arena **arena,
+.ti +8
+    u_short p_size);
+
+void libnet_destroy_packet_arena(struct libnet_arena **arena);
+ 
+
+ADDRESS RESOLUTION ROUTINES
+
+u_char *libnet_host_lookup(u_long in, u_short use_name);
+
+void libnet_host_lookup_r(u_long in, u_short use_name, u_char *buf);
+
+u_long libnet_name_resolve(u_char *hostname, u_short use_name);
+
+u_long libnet_get_ipaddr(struct link_int *l, const u_char *device,
+.ti +8
+    const u_char *buf);
+
+struct ether_addr *libnet_get_hwaddr(struct link_int *l,
+.ti +8
+    const u_char *device, const u_char *buf);
+
+
+PACKET INJECTION FRAMEWORK ROUTINES
+
+int libnet_open_raw_sock(int protocol);
+
+int libnet_close_raw_sock(int fd);
+
+int libnet_select_device(struct sockaddr_in *sin, u_char **device,
+.ti +8
+    u_char *ebuf);
+
+struct link_int *libnet_open_link_interface(char *device, char *ebuf);
+
+int libnet_close_link_interface(struct link_int *);
+
+int libnet_write_ip(int sock, u_char *packet, int len);
+
+int libnet_write_link_layer(struct link_int *l, const u_char *device,
+.ti +8
+     u_char *buf, int len);
+
+int libnet_do_checksum(u_char *buf, int protocol, int len);
+
+u_short libnet_ip_check(u_short *buf, int len);
+
+u_short libnet_tcp_check(struct tcphdr *th, int len, u_long src,
+.ti +8
+    u_long dst); 
+
+
+PACKET BUILDER ROUTINES
+
+void libnet_build_arp(u_short hrd, u_short pro, u_short hln, u_short pln,
+.ti +8
+    u_short op, u_char *sha, u_char *spa, u_char *tha,
+.ti +8
+    u_char *tpa, const u_char *payload, int payload_s,
+.ti +8
+    u_char *buf);
+
+void libnet_build_dns(u_short id, u_short flags, u_short num_q,
+.ti +8
+    u_short num_anws_rr, u_short num_auth_rr,
+.ti +8
+    u_short num_addi_rr, const u_char *payload, int payload_s,
+.ti +8
+    u_char *buf);
+
+void libnet_build_ethernet(u_char *daddr, u_char *saddr, u_short id,
+.ti +8
+    const u_char *payload, int payload_s, u_char *buf);
+
+void libnet_build_icmp_echo(u_char type, u_char code, u_short id,
+.ti +8
+    u_short seq, const u_char *payload, int payload_s,
+.ti +8
+    u_char *buf);
+
+void libnet_build_icmp_mask(u_char type, u_char code, u_short id,
+.ti +8
+    u_short seq, u_long mask, const u_char *payload,
+.ti +8
+    int payload_s, u_char *buf);
+
+void libnet_build_icmp_unreach(u_char type, u_char code,
+.ti +8
+    u_short orig_len, u_char orig_tos, u_short orig_id,
+.ti +8
+    u_short orig_frag, u_char orig_ttl, u_char orig_prot,
+.ti +8
+    u_long orig_src, u_long orig_dst, const u_char *orig_payload,
+.ti +8
+    int payload_s, u_char *buf);
+
+void libnet_build_icmp_timeexceed(u_char type, u_char code,
+.ti +8
+    u_short orig_len, u_char orig_tos, u_short orig_id,
+.ti +8
+    u_short orig_frag, u_char orig_ttl, u_char orig_prot,
+.ti +8
+    u_long orig_src, u_long orig_dst, const u_char *orig_payload,
+.ti +8
+    int payload_s, u_char *buf);
+
+void libnet_build_icmp_timestamp(u_char type, u_char code, u_short id,
+.ti +8
+    u_short seq, n_time otime, n_time rtime, n_time ttime,
+.ti +8
+    const u_char *payload, int payload_s, u_char *buf);
+
+void libnet_build_igmp(u_char type, u_char code, u_long ip, u_char *buf);
+
+void libnet_build_ip(u_short len, u_char tos, u_short id, u_short frag,
+.ti +8
+    u_char ttl, u_char prot, u_long saddr, u_long daddr,
+.ti +8
+    const u_char *payload, int payload_s, u_char *buf);
+
+void libnet_build_rip(u_char command, u_char ver, u_short rd, u_short af,
+.ti +8
+    u_short rt, u_long addr, u_long mask, u_long next_hop,
+.ti +8
+    u_long metric, const u_char *payload, int payload_s,
+.ti +8
+    u_char *buf);
+
+void libnet_build_tcp(u_short sport, u_short dport, u_long seq,
+.ti +8
+    u_long ack, u_char control, u_short win, u_short urg,
+.ti +8
+    const u_char *payload, int payload_s, u_char *buf);
+
+void libnet_build_udp(u_short sport, u_short dport,
+.ti +8
+    const u_char *payload, int payload_s, u_char *buf);
+
+int libnet_insert_ipo(struct ipoption *opt, u_char opt_len, u_char *buf);
+
+int libnet_insert_tcpo(struct tcpoption *opt, u_char opt_len,
+.ti +8
+    u_char *buf);
+
+
+MISCELLANEOUS SUPPORT ROUTINES
+
+int libnet_seed_prand();
+
+u_long libnet_get_prand(int type);
+
+void libnet_hex_dump(u_char *buf, int len, int swap, FILE *stream);
+
+ASN.1 BER ROUTINES
+
+u_char *libnet_build_asn1_int(u_char *data, int *datalen, u_char type,
+.ti +8
+    long *int_p, int int_s);
+
+u_char *libnet_build_asn1_uint(u_char *data, int *datalen, u_char type,
+.ti +8
+    u_char *int_p, int int_s);
+
+u_char *libnet_build_asn1_string(u_char *data, int *datalen, u_char type,
+.ti +8
+    u_long *string, int str_s);
+
+u_char *libnet_build_asn1_header(u_char *data, int *datalen, u_char type,
+.ti +8
+    int len);
+
+u_char *libnet_build_asn1_length(u_char *data, int *datalen, int len);
+
+u_char *libnet_build_asn1_sequence(u_char *data, int *datalen,
+.ti +8
+    u_char type, int len);
+
+u_char *libnet_build_asn1_objid(u_char *data, int *datalen, u_char type,
+.ti +8
+    oid *objid, int oid_s);
+
+u_char *libnet_build_asn1_null(u_char *data, int *datalen, u_char type);
+
+u_char *libnet_build_asn1_bitstring(u_char *data, int *datalen,
+.ti +8
+    u_char type, u_long *string, int str_s);
+.ft
+.fi
+
+.PP
+.SH ADDRESS RESOLUTION ROUTINES
+\fBlibnet_host_lookup()\fP converts the supplied network-ordered (big-endian)
+IPv4 address into its human-readable coutnerpart.  If use_name is 1,
+\fBlibnet_host_lookup()\fP will attempt to resolve this IP address and return a
+hostname, otherwise (or if the lookup fails), the function returns a
+dotted-decimal ASCII string.  This function is hopelessly non re-entrant
+as it uses static data.  Users concerned with re-entrancy should use
+\fBlibnet_host_lookup_r()\fP.
+
+\fBlibnet_host_lookup_r()\fP is the (planned) reentrant version of the above
+function.  As soon as reentrant network resolver libraries become available
+this function will likewise be reentrant.  An additional argument of a buffer
+to store the converted (or resolved) IPv4 address is supplied by the user.
+
+\fBlibnet_name_resolve()\fP takes a NULL terminated ASCII string representation
+of an IPv4 address (dots and decimals or canonical hostname if use_name is
+1) and converts it into a network-ordered (big-endian) 4-byte value.
+
+\fBlibnet_get_ipaddr()\fP takes a pointer to link layer interface struct, a
+pointer to the network device name, and an empty buffer to be used in case
+of error.  Upon success the function returns the IP address of the
+specified interface in network-byte order or 0 upon error (and errbuf will
+contain a reason).
+
+\fBlibnet_get_hwaddr()\fP takes a pointer to link layer interface struct, a
+pointer to the network device name, and an empty buffer to be used in case
+of error.  The function returns the MAC address of the specified interface
+upon success or 0 upon error (and errbuf will contain a reason).
+
+.SH PACKET MEMORY MANAGEMENT ROUTINES
+\fBlibnet_init_packet()\fP initializes a packet for use.  If the size
+parameter is omitted (or negative) the library will pick a reasonable
+value for the user (currently MAX_PACKET).  If the memory allocation is
+successful, the memory is zeroed and the function returns 1.  If there is
+an error, the function returns -1.  Since this function calls malloc, you
+certainly should, at some point, make a corresponding call to destroy_packet().
+
+\fBlibnet_destroy_packet()\fP frees the memory associated with the packet.
+
+\fBlibnet_init_packet_arena()\fP allocates and initializes a memory pool.  If
+you plan on building and sending several different packets, this is a good
+choice.  It allocates a pool of memory from which you can grab chunks to
+build packets (see next_packet_from_arena() below).  It takes the address
+to an arena structure pointer (so it can modify the structure elements),
+and hints on the possible packet size and number of packets.  The last two
+arguments are used to compute the size of the memory pool.  The function
+returns -1 if the malloc fails or 1 if everything goes ok.
+
+\fBlibnet_next_packet_from_arena()\fP returns a chunk of memory from the arena
+of the requested size pool and decrements the available byte counter.  If
+the requested memory is not available from the arena, it returns NULL.
+Note that there is nothing preventing a poorly coded application from using
+more memory than requested and causing all kinds of problems.  Take heed.
+
+\fBlibnet_destroy_packet_arena()\fP frees the memory associated with the arena.
+
+For the above three functions, it is a checked runtime error for arena to
+be a NULL pointer.
+
+The arena interface also includes LIBNET_GET_ARENA_SIZE which returns the total
+size of an arena and LIBNET_GET_ARENA_REMAINING_BYTES which returns the
+remaining bytes of usable memory from an arena.
+
+.SH PACKET INJECTION FRAMEWORK ROUTINES
+\fBlibnet_open_raw_sock()\fP opens a raw IPv4 socket of the supplied protocol
+type and sets the IP_HDRINCL socket option.  Returned is the socket file
+descriptor or -1 on error.
+
+\fBlibnet_close_raw_sock()\fP closes an opened raw socket.  Returned is 1
+upon success or -1 on error.
+
+\fBlibnet_select_device()\fP will run through the list of interfaces and select 
+one for use (ignoring the loopback device).  If device is NULL, it will try
+to fill it in with the first non-loopback device it finds, otherwise, it
+will try to open the specified device.  If successful, 1 is returned (and
+if device was NULL, it will now contain the device name which can be used
+in libnet_*link*() type calls).  If an error occurs, -1 is returned and
+errbuf will contain a reason.
+
+\fBlibnet_open_link_interface()\fP opens a low-level packet interface.  This is
+required to write link layer frames.  Supplied is a u_char pointer to the
+interface device name and a u_char pointer to an error buffer.  Returned is
+a filled in link_int struct or NULL on error.
+
+\fBlibnet_close_link_interface()\fP closes an opened low-level packet interface.
+Returned is 1 upon success or -1 on error.
+
+\fBlibnet_write_ip()\fP writes an IP packet to the network.  The first
+argument is the socket created with \fBlibnet_open_raw_sock()\fP, the second
+is a pointer to a buffer containing a complete IP datagram, and the third
+argument is the total packet size.  It returns the number of bytes written.
+
+\fBlibnet_write_link_layer()\fP writes an link-layer frame to the network.  The
+first argument is a pointer to a filled in link_int structure, the next is
+a pointer to the network device, the next is the raw packet and the last
+is the packet size.  Returned is the number of bytes written or -1 on error.
+
+\fBlibnet_do_checksum()\fP calculates the checksum for the packet header.  The
+first argument is a pointer to the constructed IPv4 packet buffer.  The second
+is the transport protocol used and the third is the packet length (not including
+the IP header).  The function calculates the checksum for the transport
+protocol and fills it in at the appropriate header location.  This function
+should be called only after a complete packet has been built.  Note that when
+using raw sockets the IP checksum is always computed by the kernel, but when
+using link layer interfaces, the IP checksum must be explicitly computed.
+The function returns 1 upon success or -1 if an error occurs.
+
+\fBlibnet_ip_check()\fP calculates the IP family checksum.  Supplied is a
+pointer to the buffer containing the data to be summed and the length of
+the data.  To calculate a UDP checksum, a pseudoheader (of type struct
+pseudohdr) is required.  Return value is an unsigned short containing the
+checksum.  Under x86-based machines, the assembly language version of the
+function is built to speed performance.
+
+\fBlibnet_tcp_check()\fP calculates the TCP header checksum specifically.
+Supplied is a pointer to the TCP header and payload, the packet length
+(header + data), and the source and destination IP addresses (in network-byte
+order).  Return value is an unsigned short containing the checksum.  Under
+x86-based machines, the assembly language version of the function is built
+to speed performance.
+
+.SH PACKET BUILDER ROUTINES
+For all of the build_* functions, it is a checked runtime error for buf
+to be a NULL pointer, but an unchecked error for the optional payload or
+the packet header itself to exceed the allocated memory.  Take heed.
+
+\fBlibnet_build_arp()\fP constructs an ARP packet.  Supplied are the following:
+hardware addresss type, protocol address type, the hardware addess length,
+the protocol address length, the ARP packet type, the sender hardware
+address, the sender protocol address, the target hardware address, the target
+protocol address, the packet payload, the payload size, and finally, a pointer
+to the packet header memory.  Note that this function only builds ethernet/IP
+ARP packets, and consequently the first value should be ARPHRD_ETHER.  The
+ARP packet type should be one of the following: ARPOP_REQUEST, ARPOP_REPLY,
+ARPOP_REVREQUEST, ARPOP_REVREPLY, ARPOP_INVREQUEST, or ARPOP_INVREPLY.
+
+\fBlibnet_build_dns()\fP constructs a DNS packet.  Supplied are the following:
+DNS packet ID, flags, number of questions, number of answer resource records,
+number of authority resource records, number of additional resource records.
+All of the above are unsigned shorts.  All of the `interesting` fields of the
+header are variable in content and length, and therefore have to be included
+at the programmer's discretion.  We use the standard libnet payload and
+payload size interface for this.  Finally, please be sure to include a pointer
+to some preallocated memory.
+
+\fBlibnet_build_ethernet()\fP constructs an ethernet packet.  Supplied is the
+destination address, source address (as arrays of unsigned character bytes)
+and the ethernet frame type, a pointer to an optional data payload, the
+payload length, and a pointer to a pre-allocated block of memory for the
+packet.  The ethernet packet type should be one of the following:
+
+Value               Type
+.ti
+ETHERTYPE_PUP       PUP protocol
+.ti
+ETHERTYPE_IP        IP protocol
+.ti
+ETHERTYPE_ARP       ARP protocol
+.ti
+ETHERTYPE_REVARP    Reverse ARP protocol
+.ti
+ETHERTYPE_VLAN      IEEE VLAN tagging
+.ti
+ETHERTYPE_LOOPBACK  Used to test intefaces
+
+Please note that some low-level interfaces (bpf in particular) do
+not allow for the spoofing of ethernet addresses without kernel modification.
+
+\fBlibnet_build_icmp_echo()\fP builds an ICMP_ECHO / ICMP_ECHOREPLY packet.
+Supplied is a byte for the packet type, a byte for the code, an unsigned
+short for the packet id, an unsigned short for the packet sequence number,
+and a pointer to an optional data payload, the payload length, and a pointer
+to a pre-allocated block of memory for the packet.  The type should be
+ICMP_ECHOREPLY or ICMP_ECHO and the code should be 0.
+
+\fBlibnet_build_icmp_mask()\fP builds an ICMP_MASKREQ / ICMP_MASKREPLY packet.
+Supplied is a byte for the packet type, a byte for the code, an unsigned
+short for the packet id, an unsigned short for the packet sequence number,
+a 32-bit subnet mask, a pointer to an optional data payload, the payload
+length, and a pointer to a pre-allocated block of memory for the packet.
+The type should be ICMP_MASKREQ or ICMP_MASKREPLY and the code should be 0.
+
+\fBlibnet_build_icmp_unreach()\fP builds an ICMP_UNREACH packet.  Supplied is
+the normal ICMP stuff, a byte for the packet type and a byte for the code.  Next
+come the values for the IP header that caused the error that necessitated the
+unreachable.  The standard payload arguments to this function actually apply
+to the original IP packet and will be tacked on there.  The type should be
+ICMP_UNREACH and the code should be one of the following 16 different
+unreachable codes:
+
+Code    Symbolic Name
+.ti
+0       ICMP_UNREACH_NET
+.ti
+1       ICMP_UNREACH_HOST
+.ti
+2       ICMP_UNREACH_PROTOCOL
+.ti
+3       ICMP_UNREACH_PORT
+.ti
+4       ICMP_UNREACH_NEEDFRAG
+.ti
+5       ICMP_UNREACH_SRCFAIL
+.ti
+6       ICMP_UNREACH_NET_UNKNOWN
+.ti
+7       ICMP_UNREACH_HOST_UNKNOWN
+.ti
+8       ICMP_UNREACH_ISOLATED
+.ti
+9       ICMP_UNREACH_NET_PROHIB
+.ti
+10      ICMP_UNREACH_HOST_PROHIB
+.ti
+11      ICMP_UNREACH_TOSNET
+.ti
+12      ICMP_UNREACH_TOSHOST
+.ti
+13      ICMP_UNREACH_FILTER_PROHIB
+.ti
+14      ICMP_UNREACH_HOST_PRECEDENCE
+.ti
+15      ICMP_UNREACH_PRECEDENCE_CUTOFF
+
+
+\fBlibnet_build_icmp_timeexceed()\fP builds an ICMP_UNREACH packet.  Supplied
+is the normal ICMP stuff, a byte for the packet type and a byte for the code.
+Next come the values for the IP header that caused the error that necessitated
+the unreachable.  The standard payload arguments to this function actually
+apply to the original IP packet and will be tacked on there.  The type should
+be ICMP_TIMXCEED and the code should be ICMP_TIMXCEED_INTRANS or
+ICMP_TIMXCEED_REASS.
+
+\fBlibnet_build_icmp_timestamp()\fP builds an ICMP_TSTAMP / ICMP_TSTAMPREPLY
+packet.  Supplied is a byte for the packet type, a byte for the code, an
+unsigned short for the packet id, an unsigned short for the packet sequence
+number, the three timestamp values, a pointer to an optional data payload,
+the payload length, and a pointer to a pre-allocated block of memory for the
+packet.  The type should be ICMP_TSTAMP or ICMP_TSTAMPREPLY and the code
+should be 0.
+
+\fBlibnet_build_igmp()\fP builds an IGMP packet.  Supplied is a byte for the
+packet type, a byte for the code, an unsigned long for the Class D address,
+and a pointer to a pre-allocated block of memory for the packet.
+
+\fBlibnet_build_ip()\fP builds an IP packet.  Supplied is the packet length
+(not including the IP header), the IP tos bits, the IP ID, the fragmentation
+flags and offset, the packet TTL, the transport protocol, the source and
+destination IP addresses (in network-byte order), a pointer to an
+optional data payload, the payload length, and a pointer to a
+pre-allocated block of memory for the packet.  To just build an IP header
+with no data payload, only IP_H bytes need to be allocated.  The payload
+and payload size arguments should no be used to build TCP, UDP or ICMP
+(when supported) packets; for these transports, the relevant functions
+should be used.  The payload arguments should only be used to build an
+arbitrary IP packet with a payload.
+
+\fBlibnet_build_rip()\fP constructs a RIP (routing information protocol)
+packet.  The values supplied depend on the version of the RIP packet you
+desire to build.  The following table applies:
+
+Passing Order   Datatype    RIP v1          RIPv2
+.ti
+first           byte        command         command
+.ti
+second          byte        version         version
+.ti
+third           ushort      zero            routing domain   
+.ti
+fourth          ushort      address family  address family
+.ti
+fifth           ushort      zero            route tag
+.ti
+sixth           ulong       IP address      IP address
+.ti
+seventh         ulong       zero            subnet mask
+.ti
+eighth          ulong       zero            next hop IP
+.ti
+ninth           ulong       metric          metric
+.ti
+tenth           const u_char *      Packet payload
+.ti
+eleventh        int                 Packet payload size
+.ti
+twelfth         u_char *            Packet header memory
+
+The command should be one of the following: RIPCMD_REQUEST, RIPCMD_RESPONSE,
+RIPCMD_TRACEON, RIPCMD_TRACEOFF, RIPCMD_POLL, RIPCMD_POLLENTRY, or
+RIPCMD_MAX.  The version should be RIPVER_1 or RIPVER_2.
+
+\fBlibnet_build_tcp()\fP builds a TCP packet.  Supplied is the source port,
+destination port, the sequence and acknowledgement numbers, the control bits
+(which can be logically OR'd together to set multiple flags -- see the example
+below), the advertised window size, the urgent pointer, a pointer to an
+optional data payload, the payload size, and lastly, the pointer to a
+pre-allocated block of memory for the packet.  To just build a TCP header
+with no data payload, only TCP_H bytes need be allocated.
+
+\fBlibnet_build_udp()\fP builds a UDP packet.  Supplied is the source port, the
+destination port, a pointer to an optional data payload, the payload size,
+and lastly, a pointer to a pre-allocated block of memory for the packet.
+To just build a UDP header with no data payload, only UDP_H bytes need to
+be allocated.
+
+\fBlibnet_insert_ipo()\fP inserts IP options into an already created IP packet.
+Supplied is a pointer to an ip option struct (which must be filled in by the
+user), the size of the options list, and a pointer the completed packet.  The
+function returns -1 if the options would make the packet too large (greater
+then 65535 bytes) or 1 otherwise.  It is an unchecked runtime error for
+the user to have not allocated enough heap memory for the packet + options.
+
+\fBlibnet_insert_tcpo()\fP inserts TCP options into an already created IP
+packet.  Replace the pointer to an IP option struct with one to a TCP option
+struct and this function is exactly the same as above.
+
+.SH MISCELLANEOUS SUPPORT ROUTINES
+\fBlibnet_seed_prand()\fP seeds the psuedorandom number generator.  Returns 1
+on success, -1 on failure.
+
+\fBlibnet_get_prand()\fP returns a positive psuedorandom integer of the
+specified type.  Expects type to be one of five symbolics PR2, PR8, PR16,
+PRu16, PR32 or PRu32.  PR2 returns a one or a zero, PR8 returns a byte, PR16
+returns up to a signed short (from 0 to 32767), PRu16 returns an unsigned
+short (from 0 to 65535), PR32 returns a signed long (from 0 to 2147483647)
+and PRu32 returns an unsigned long number (from 0 to 4294967295).
+
+\fBlibnet_hex_dump()\fP prints a packet out in hex.  Supplied is the packet
+and its length, a swap flag, and a pointer to a previously opened
+stream.  The swap flag (1 or 0) specifies whether or not to print the packet
+as it appears in memory (0) or to swap the bytes into host order (1).
+
+.SH ASN.1 BER ROUTINES
+
+\fBlibnet_build_asn1_int()\fP
+
+\fBlibnet_build_asn1_uint()\fP
+
+\fBlibnet_build_asn1_string()\fP
+
+\fBlibnet_build_asn1_header()\fP
+
+\fBlibnet_build_asn1_length()\fP
+
+\fBlibnet_build_asn1_sequence()\fP
+
+\fBlibnet_build_asn1_objid()\fP
+
+\fBlibnet_build_asn1_null()\fP
+
+\fBlibnet_build_asn1_bitstring()\fP
+
+.SH SYMBOLIC CONSTANTS
+To make your life and code cleaner, libnet defines symbolic constants to make
+your life easier.
+
+Default packet header sizes:
+
+.ti
+ARP_H               ARP header
+.ti
+DNS_H               DNS header
+.ti
+ETH_H               ethernet header
+.ti
+ICMP_H              ICMP header (base -- deprecated)
+.ti
+ICMP_ECHO_H         ICMP_ECHO / ICMP_ECHOREPLY header
+.ti
+ICMP_MASK_H         ICMP_MASKREQ / ICMP_MASKREPLY header
+.ti
+ICMP_UNREACH_H      ICMP_UNREACHABLE header (base)
+.ti
+IGMP_H              IGMP header
+.ti
+IP_H                IP header
+.ti
+P_H                 PSUEDO TCP/UDP header
+.ti
+RIP_H               RIP header
+.ti
+TCP_H               TCP header
+.ti
+UDP_H               UDP header
+
+
+Standard memory sizes for packets:
+
+.ti
+PACKET              Standard packet size (IP_H + TCP_H)
+.ti
+OPTS                Maximum IP options list
+.ti
+MAX_PACKET          Maximum IPv4 packet size
+
+
+Other constants you should know about:
+
+IP Type Of Service constants:
+
+.ti
+IPTOS_LOWDELAY      Minimize delay
+.ti
+IPTOS_THROUGHPUT    Maximize throughput
+.ti
+IPTOS_RELIABILITY   Maximize reliability
+.ti
+IPTOS_MINCOST       Minimize monetary cost
+
+
+IP Fragmentation flags:
+
+.ti
+IP_DF               Don't fragment this datagram
+.ti
+IP_MF               More fragments en route
+
+
+TCP control bits:
+
+.ti
+TH_URG              Urgent flag
+.ti
+TH_ACK              Acknowledgement field valid
+.ti
+TH_PSH              Push this data to application layer
+.ti
+TH_RST              Reset the referenced connection
+.ti
+TH_SYN              Synchronize connection state
+.ti
+TH_FIN              Finished sending data
+
+
+.SH RAW IP EXAMPLE
+To build and write a packet from a raw socket, the following 5 steps should be 
+emulated (error checking omitted for brevity).
+
+1) Allocate enough heap memory to store your entire packet (and optional data).
+
+    u_char *buf = malloc(TCP_H + IP_H);
+
+2) Open the raw socket (this also sets IP_HDRINCL).
+
+    int sock = open_raw_sock(IPPROTO_RAW);
+
+3) Call the relevant build function.  It is important to note that endianess
+is not specified.  To create a portable and convenient interface, byte-ordering
+is handled by the low-level routines.  It's not important which order we call
+the build functions, as long as the correct location in memory is passed to
+the correct build function.
+
+    build_ip(TCP_H, 101, 0, 64, IPPROTO_TCP, src, dst,
+    NULL, 0, buf);
+    build_tcp(1025, 23, 1, 2, TH_SYN|TH_ACK, 1024, 0,
+    NULL, 0, buf + IP_H);
+
+4) Calculate the packet checksum.  Under raw sockets, the IP checksum is
+always handled by the kernel.  This is one of the only standard things you
+will find across raw sockets implementations.
+
+    do_checksum(buf, IPPROTO_TCP, TCP_H);
+
+5) Inject the packet into the network.
+
+    write_ip(sock, buf, TCP_H + IP_H);
+
+.SH LINK-LAYER EXAMPLE
+To build and write a packet at the link-layer, the following 5 steps
+should be emulated (error checking omitted for brevity).
+
+1) Allocate enough heap memory to store your entire packet (and optional data).
+
+    u_char *buf = malloc(ARP_H + ETP_H);
+
+2) Open the link-layer interface.  Device should be an interface name i.e:
+"eth0" or "fxp0"
+
+    struct link_int *l = open_link_interface(device,
+    errbuf);
+
+3) Build the packet.  Note we have to build an ethernet header.  Duh.
+
+    build_ethernet(enet_dst, enet_src, ETHERTYPE_IP, NULL,
+    0, buf);
+    build_ip(TCP_H, 101, 0, 64, IPPROTO_TCP, src, dst,
+    NULL, 0, buf + ETH_H);
+    build_tcp(1025, 23, 1, 2, TH_SYN|TH_ACK, 1024, 0,
+    NULL, 0, buf + IP_H + ETH_H);
+
+4) Calculate the packet checksum.  Notice we calculate the checksum across
+the IP header this time.  The kernel will not do this for us so it is
+mandatory.
+
+    do_checksum(buf + ETH_H, IPPROTO_IP, IP_H);
+    do_checksum(buf + ETH_H, IPPROTO_TCP, TCP_H);
+
+5) Inject the packet into the network.
+
+    write_link_layer(l, device, buf, ETH_H + IP_H
+    + TCP_H);
+
+.SH SEE ALSO
+pcap(3), bpf(4), dlpi(7P)
+.SH AUTHOR
+Mike D. Schiffman <mike@infonexus.com>
+.LP
+The current version is always available:
+.LP
+.RS
+.I http://www.packetfactory.net/libnet
+.RE
+.SH BUGS
+Solaris raw sockets are cooked.  They do not allow one to set the ip_len,
+ip_frag or the ip_id and the TCP checksumming is broken.  To work around
+this, use the link-layer API instead of raw socket functions.
+
+The Berkeley Packet Filter does not allow for the arbitrary specification
+of source ethernet addresses.  This is not so much a bug as an oversight
+in the protocol.  Included with the distribution is lkm code to work around
+this.
+
+Please send bug reports to {route, mike}@infonexus.com.

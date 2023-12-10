@@ -1,0 +1,15 @@
+===============================================================================
+    LIBNET          (c) 1998, 1999  Mike D. Schiffman <mike@infonexus.com>
+                                    route|daemon9 <route@infonexus.com>
+                                    http://www.packetfactory.net/libnet
+===============================================================================
+
+    New functions for 0.99b
+    
+    libnet_select_device();
+
+    Please start using the new function naming scheme.  See README.stubs for
+    more info.  The old one still works, but is being deprecated.
+
+
+EOF

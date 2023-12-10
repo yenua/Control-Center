@@ -1,0 +1,17 @@
+===============================================================================
+    LIBNET          (c) 1998, 1999  Mike D. Schiffman <mike@infonexus.com>
+                                    route|daemon9 <route@infonexus.com>
+                        http://www.infonexus.com/~daemon9/Projects/Libnet
+===============================================================================
+
+
+Installation:
+-------------
+0. nroff -man doc/libnet.3 | less
+1. Read the README* files
+2. ./configure
+3. make
+4. make test
+5. make install
+
+EOF

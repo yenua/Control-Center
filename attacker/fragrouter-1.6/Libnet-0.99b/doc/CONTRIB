@@ -1,0 +1,49 @@
+===============================================================================
+    LIBNET          (c) 1998, 1999  Mike D. Schiffman <mike@infonexus.com>
+                                    route|daemon9 <route@infonexus.com>
+                                    http://www.packetfactory.net/libnet
+===============================================================================
+
+Additional Contributors (newer contributors first):
+-----------------------
+Dug Song            <dugsong@anzen.com>
+                    BSD port of get_hwaddr.
+                    BSD/OS port.
+
+Nergal              <nergal@icm.edu.pl>
+                    TCP/UDP checksum fix.
+
+Jeremy F. Rauch     <jrauch@cadre.org>
+                    vpipes port.
+
+jacobc              <jacobc@ifsec.com>
+                    name_resolve patch for more consistent (ala inet_addr)
+                    behavior.
+
+Derrick J. Brashear  <shadow@dementia.org>
+                    TONS of help.
+                    Makefile.in and configure.in fixes.
+                    dlpi fix for Solaris/IRIX.
+                    snoop (drain) fix for IRIX.
+                    get_hwaddr, get_ipaddr, build_icmpmask functions.
+
+Andrew Reiter       <s467338@gettysburg.edu>
+                    Spelling fixes.
+
+David Goldsmith     <dhg@ksrt.org>
+                    A better GLIBC detection routine.
+.99                 Numerous spelling fixes.
+
+savage              <savage@apostols.org>
+                    Ganked some of his autoconf macros from QueSO.
+
+Nate Lawson         <NLawson@scient.com>
+                    Elite ideas for checksums (not implemented yet however).
+
+Brian E. Mitchell   <bem@es2.net>
+                    NetBSD autoconf diff.
+
+Aaron Bornstein     <amb@es2.net>
+                    Solaris checksums.
+
+EOF

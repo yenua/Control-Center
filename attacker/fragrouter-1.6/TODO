@@ -1,0 +1,66 @@
+
+Errata
+------
+
+Given our simple one-way proxy architecture, we cannot implement a few
+of the attacks listed in the original SNI paper, because we cannot
+intercept the victim's replies to the attacker.
+
+While we could implement the attacks for a single exploit (phf, for
+example), there isn't a good way to generalize this for any arbitrary
+attack stream. As it turns out, most of the attacks we omit are the
+"invalid" attacks, which are only useful in demonstrating false
+positives in the NIDS being tested anyhow.
+
+Here are the SNI attacks we leave out, and why:
+
+tcp-2:  Complete a TCP handshake, send the test string in a stream of
+	1-byte TCP data segments where the sequence number wraps back
+	to zero.
+
+tcp-6: Complete a TCP handshake, send the test string in a series of
+       1-byte TCP data segments, and increase the sequence number by
+       1000 midway through the stream.
+
+If fragrouter were to rewrite the sequence numbers in the attack
+stream to the victim, the victim would ACK the bogus sequence numbers
+to the attacker. Since fragrouter isn't playing man-in-the-middle for
+both sides of the conversation, the attacker would be desynchronized
+very quickly, ending the attack prematurely.
+
+tcbc-1: Do not complete a TCP handshake, but send the test string in a
+	series of 1-byte TCP data segments as if a handshake had
+	occurred for some arbitrary sequence number.
+
+If fragrouter were to spoof a reply SYN/ACK to the attacker, so that
+the attacker would continue the attack for fragrouter to forward, the
+victim would issue a RST upon receipt of the spurious ACK packets
+containing the attack, ending it prematurely.
+
+tcbt-2: Complete a TCP handshake and send the test string in a series
+	of 1-byte TCP data segments. Midway through the stream, tear
+	the connection down with a RST (but continue to send the rest
+	of the data segments).
+
+Fragrouter's injection of a RST would cause the victim's TCP to close
+the connection, and return RSTs to the attacker upon receipt of any
+subsequent attack data segments, ending the attack prematurely.
+
+ins-1: Complete a TCP handshake and send the test string in a series
+       of 1-byte TCP data segments, each with a bad IP checksum.
+
+This is strictly an implementation bug - for most platforms (besides
+Solaris), our use of raw sockets is not at the datalink layer - we
+allow the kernel to compute the IP checksum for us.
+
+evade-1: Complete the TCP handshake, include the test string in the
+	 initial SYN packet.
+
+Fragrouter cannot collect the entire attack from the attacker to
+repackage in a single SYN packet without a priori knowledge of the
+attack length, and the ability to spoof the server's correct responses
+(if necessary).
+
+
+--
+$Id: TODO,v 1.4 1999/06/21 20:05:47 dugsong Exp $

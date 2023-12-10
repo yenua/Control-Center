@@ -6,17 +6,21 @@ ENV TZ=Asia/Seoul
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 4EB27DB2A3B88B8B
 
 RUN apt-get update -y
-RUN apt-get upgrade -y
 
 RUN apt-get install -y net-tools
 RUN apt-get install -y iputils-ping
 
+# 지울까 말까
 RUN apt-get install -y nmap
 RUN apt-get install -y dsniff
 #fragrouter가 없대..
 #RUN apt-get install -y fragrouter
-RUN apt install python3-pip -y
+#RUN apt-get install -y python3-pip
+RUN apt-get install -y netcat
+RUN apt-get install -y wireshark
+COPY ./mediamtx_v1.3.1_linux_amd64 /root/Desktop/rtsp
 
-COPY ./mediamtx_v1.3.1_linux_amd64 /rtsp
-
-WORKDIR /rtsp
+COPY ./fragrouter-1.6 /root/Desktop/arp
+RUN apt-get install bison -y
+RUN apt-get install yacc -y
+RUN apt-get install flex -y

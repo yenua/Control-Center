@@ -1,0 +1,89 @@
+/*
+ *  $Id: insert_ipo.c,v 1.2 1999/09/21 15:47:33 dugsong Exp $
+ *
+ *  libnet
+ *  insert_ipo.c - inserts IP options into a prebuilt IP packet
+ *
+ *  Copyright (c) 1998, 1999 Mike D. Schiffman <mike@infonexus.com>
+ *                           route|daemon9 <route@infonexus.com>
+ *  All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ *
+ */
+
+#if (HAVE_CONFIG_H)
+#include "../include/config.h"
+#endif
+#include "../include/libnet.h"
+
+int
+insert_ipo(struct ipoption *opt, u_char opt_len, u_char *buf)
+{
+    struct ip *ip_hdr;
+    u_short s, ip_hl, pad;
+    u_char *p;
+
+    assert(buf);
+
+    ip_hdr = (struct ip *)(buf);
+    ip_hl = ip_hdr->ip_hl * 4;
+
+    s = ntohs(ip_hdr->ip_len);
+    
+    /* See how much to pad options out (always terminating with EOL). */
+    pad = 4 - (((ip_hl - IP_H) + opt_len) & 3);
+
+    if ((s + opt_len + pad) > IP_MAXPACKET)
+    {
+        /* Nope.  Too big. */
+#if (__DEBUG)
+        fprintf(stderr,
+            "insert_ipo: options list would result in too large of a packet\n");
+#endif
+        return (-1);
+    }
+
+    /* Do we have more then just an IP header? */
+    if (s > ip_hl)
+    {
+        /* Move over whatever's in the way. */
+        memmove(buf + ip_hl + opt_len + pad, buf + ip_hl, opt_len + pad);
+    }
+
+    /*
+     *  Copy over option list.  We rely on the programmer having been
+     *  smart enough to allocate enough heap memory here.  Uh oh.
+     */
+    p = buf + ip_hl;
+    memcpy(p, opt->ipopt_list, opt_len);
+
+    /* XXX - this should be 1 if more options are to follow. */
+    memset(p + opt_len, 0, pad); 
+
+    ip_hdr->ip_hl   += (opt_len + pad) / 4;
+    ip_hdr->ip_len  = htons(s + opt_len + pad);
+
+    return (1);
+}
+
+/* EOF */

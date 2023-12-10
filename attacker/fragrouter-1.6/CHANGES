@@ -1,0 +1,74 @@
+$Id: CHANGES,v 1.18 1999/09/21 15:47:32 dugsong Exp $
+
+v1.6 Tue Sep 21 11:06:19 EDT 1999
+
+- Added -g and -G IP LSRR options, to implement Windows IP source
+  routing attack from Anthony Osborne <Anthony_Osborne@nai.com>.
+
+- Fixed libnet-0.99b's insert_ipo().
+
+v1.5 Thu Jul 29 11:48:08 EDT 1999
+
+- Fix handling of padded ethernet frames (such as for TCP SYNs),
+  as reported by Nergal <nergal@icm.edu.pl>.
+
+v1.4 Sat Jul 24 18:30:49 EDT 1999
+
+- Added misc-2: Linux IP chains attack from John McDonald
+  <jm@dataprotect.com>.
+
+v1.3 Fri Jun 25 17:00:09 EDT 1999
+
+- Modified libnet-0.99b's write_ip.c to do zero packet copies.
+
+- Added misc-1: Thomas Lopatic's Windows NT 4 SP2 attack.
+
+- Cleaned up ip_frag.c, list.c, send.c.
+
+- Added test/mies.c OpenBSD 2.4 last frag < 4 byte ENOBUFS demo.
+
+- Added errata to TODO document.
+
+v1.2 Thu May 20 23:53:21 EDT 1999
+
+- Fixed transport protocol header preservation.
+
+- Fixed sending of short frags (and frag-7 attack) on Linux.
+
+- Added tcbt-1 attack, for a total of 20 attacks.
+
+- Fixed IP ID, TCP SYN parameters in tcbc-2 attack.
+
+- Fixed wild free() in list.c, tcp_seg.c.
+
+- Added real tcpdump-style printing of packets.
+
+- Rewrote checksum.c in libnet-0.99b to do fast zero-copy
+  checksumming.
+
+- Added libnet-0.99b Solaris support from John McDonald
+  <jmcdonal@unf.edu>.
+
+v1.1 Tue May 18 11:26:20 EDT 1999
+
+- Import libnet-0.99b (adds my BSD patches).
+
+- Implement TCP attacks 1, 3-5, 7-9, TCBC attacks 2-3, insert 2.
+
+v1.0 Thu May 13 11:05:04 EDT 1999
+
+- Public release.
+
+v0.1b Tue May  4 09:56:58 EDT 1999
+
+- Linux support added.
+
+- BSD/OS support added (minor patch to Libnet-0.99's configure.in).
+
+- additional debugging code enabled (add -DDEBUG to CFLAGS in the
+  top-level Makefile to see).
+
+v0.1a Mon May  3 17:02:35 EDT 1999
+
+- Initial release. All "frag" attacks implemented.
+

@@ -1,0 +1,45 @@
+/* include/config.h.in.  Generated automatically from configure.in by autoheader.  */
+
+/* Define to empty if the keyword does not work.  */
+#undef const
+
+/* Define if your processor stores words with the most significant
+   byte first (like Motorola and SPARC, unlike Intel and VAX).  */
+#undef WORDS_BIGENDIAN
+
+#undef BSDISH_OS
+#undef BSD_BYTE_SWAP
+#undef DLPI_DEV_PREFIX
+#undef HAVE_DEV_DLPI
+#undef HAVE_DLPI
+#undef HAVE_PF_PACKET
+#undef HAVE_SOLARIS
+#undef RAW_IS_COOKED
+#undef HAVE_STRUCT_IP_CSUM
+#undef HAVE_LIB_PCAP
+#undef LBL_ALIGN
+#undef STUPID_SOLARIS_CHECKSUM_BUG
+#undef _BSD_SOURCE
+#undef __BSD_SOURCE
+#undef __FAVOR_BSD
+
+/* Define if you have the strerror function.  */
+#undef HAVE_STRERROR
+
+/* Define if you have the <net/ethernet.h> header file.  */
+#undef HAVE_NET_ETHERNET_H
+
+/* Define if you have the <sys/bufmod.h> header file.  */
+#undef HAVE_SYS_BUFMOD_H
+
+/* Define if you have the <sys/dlpi_ext.h> header file.  */
+#undef HAVE_SYS_DLPI_EXT_H
+
+/* Define if you have the <sys/sockio.h> header file.  */
+#undef HAVE_SYS_SOCKIO_H
+
+/* Define if you have the nsl library (-lnsl).  */
+#undef HAVE_LIBNSL
+
+/* Define if you have the socket library (-lsocket).  */
+#undef HAVE_LIBSOCKET

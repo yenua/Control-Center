@@ -19,6 +19,9 @@ services:
     tty: true
     depends_on:
       - "control-center-rtsp"
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN  
     networks:
         default_bridge:
           ipv4_address: 172.36.0.3

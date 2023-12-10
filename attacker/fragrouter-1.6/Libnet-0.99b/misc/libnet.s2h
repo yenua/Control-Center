@@ -1,0 +1,12 @@
+#    $Id: libnet.s2h,v 1.1.1.1 1999/05/18 15:33:43 dugsong Exp $
+#
+#    src2html Description file for libnet
+#
+
+set     Srctree Libnet
+set     Htmlroot        .
+set     Htmldir libnet-src2html
+set     Newsrctree      newsrc
+dir     include         headers and prototypes
+dir     src             library sourcecode
+

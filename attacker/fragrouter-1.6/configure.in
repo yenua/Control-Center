@@ -1,0 +1,46 @@
+dnl configure.in for fragrouter
+dnl
+dnl Dug Song <dugsong@anzen.com>
+dnl
+dnl $Id: configure.in,v 1.9 1999/06/25 15:19:48 dugsong Exp $
+
+AC_INIT(fragrouter.c)
+
+AC_CONFIG_HEADER(config.h)
+
+dnl Check for programs.
+AC_PROG_CC
+dnl Check for some compiler options.
+if test -n "$GCC"; then
+   AC_MSG_CHECKING([if the compiler understands -pipe -Wall])
+   OLDCC="$CC"
+   CC="$CC -pipe -Wall"
+   AC_TRY_COMPILE(,,
+      AC_MSG_RESULT(yes),
+      CC="$OLDCC"
+      AC_MSG_RESULT(no))
+fi
+AC_PROG_INSTALL
+AC_PROG_MAKE_SET
+
+dnl Check for standard header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(unistd.h sys/param.h)
+
+dnl Check for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+
+dnl Check for libraries and functions.
+AC_CHECK_FUNCS(strdup)
+
+dnl Solaris jonks
+AC_CHECK_LIB(nsl, gethostbyname)
+AC_CHECK_LIB(socket, socket)
+
+dnl Linux sux
+AC_CHECK_HEADERS(net/ethernet.h)
+dnl AC_DEFINE(_BSD_SOURCE)
+
+AC_CONFIG_SUBDIRS(libpcap-0.4 Libnet-0.99b)
+
+AC_OUTPUT(Makefile)

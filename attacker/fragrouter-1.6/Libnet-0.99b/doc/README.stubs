@@ -1,0 +1,21 @@
+===============================================================================
+    LIBNET          (c) 1998, 1999  Mike D. Schiffman <mike@infonexus.com>
+                                    route|daemon9 <route@infonexus.com>
+                                    http://www.packetfactory.net/libnet
+===============================================================================
+
+    Eventually, all of the libnet function, macro and datatype names will
+    contain the prefix `libnet_`.  The fact that they do not now is a design
+    flaw that should have been fixed a long time ago.  To make the transition
+    easier, as of version 0.99, libnet will support both nomenclature types.
+    For the functions, this is easily accomplished using stub wrappers
+    (see src/stubs.c).  The macros and datatypes are contained inside of
+    libnet-stubs.h.  Note that some of the datatypes and functions already
+    reflect this new naming convention and are left in the core files.
+
+    The stub stuff is interim.  The non-`libnet_` prefixed functions are
+    officially deprecated as of 0.99 and should not be used anymore.
+    Eventually, the plan is, to do away with the older naming scheme along
+    with the additional stub code (moving it into the core files).
+
+EOF
