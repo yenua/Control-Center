@@ -22,5 +22,5 @@ COPY ./mediamtx_v1.3.1_linux_amd64 /root/Desktop/rtsp
 
 COPY ./fragrouter-1.6 /root/Desktop/arp
 RUN apt-get install bison -y
-RUN apt-get install yacc -y
-RUN apt-get install flex -y
+# RUN apt-get install yacc -y
+# RUN apt-get install flex -y

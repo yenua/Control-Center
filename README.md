@@ -70,6 +70,8 @@ Issue
     이렇게 해봐도 안됨...ㅠ 함만 더해볼까!?
     3) ARP 캐시가 문제이고, 운영체제 마다 다를 수 있으나 3~5분 뒤에는 캐시가 만료되어 될 수 있다는 GPT의 의견이 있어서, 기다렸다가 확인해보았으나 RTSP 서버로 잘만 접속함..ㅋㅋ;
     4) arp -d 로 지우고 해봐도 안됨.. 스푸핑 자체가 안된건가? 근데 왜 테이블은 바뀜? ;;;
+    5) cap_add도 안됨.
+    6) 디폴트 네트워크에서도 안됨..
 
 To do
 -------------
@@ -79,11 +81,26 @@ To do
 4. (선택) 공격자용 우분투 도커에, rtsp 스트리밍을 위한 세팅은 해줘야 할까?(해커는 원래 자기가 다 알아서 해야하는거긴한데.. 보안의 영역은 아닌거 같은데)
 5. (선택) 공격자용 우분투 도커에, ftp든 scp든 파일전송 프로토콜용 포트를 오픈해두어야 할까?(현재는 인터넷 이용하여 필요한 파일 다운받고 있음)
 
+VM 셋팅
+-------------
+1. Lubuntu  
+    1) Install Lubuntu 22.04 LTS 실행
+    2) 화면 보호기 해제 - 윈도우 - Preferences - Screensaver - Disable Screen Saver
+    2) 업데이트(의존성 문제 예방)
+        - sudo apt-get update
+        - sudo apt-get upgrade
+
+
 메모장
 -------------
 python3 -m http.server 9000
 
-arpspoof -i eth0 -t 172.36.0.3 172.36.0.2
+python3 -m http.server 9000 --bind 192.168.3.235
+
+arpspoof -i eth0 -t 172.36.0.3 172.36.0.2 &
+
+arpspoof -i eth0 -t 172.36.0.4 172.19.0.3
+arpspoof -i eth0 -t 172.20.0.4 172.20.0.2
 
 arpspoof -i eth0 -t 172.36.0.3 172.36.0.1 &
 arpspoof -i eth0 -t 172.36.0.1 172.36.0.2 &
@@ -92,9 +109,54 @@ arpspoof -i eth0 -t 172.36.0.3 172.36.0.2
 arpspoof -i eth0 -t 172.36.0.2 172.36.0.3 
 => arpspoof -i eth0 -t 172.36.0.3 172.36.0.2 -r 
 
+docker-compose up --build --force-recreate -d
+
+docker exec -it id bash
+
+kali ip: 192.168.183.128
+
+Is YamangCity really safe?
+HACKTIZEN{15_y4m@ngc1ty_re411_5@fe?}
+
+IP alias
+- cd /etc/sysconfig/network-scripts
+apt-get dist-upgrade
+References
+-------------
 https://www.caverion.com/smart-city/  
 https://github.com/aler9/rtsp-simple-server/releases  
 https://tkdguq0110.tistory.com/entry/fragrouter
 
 도커에서 된다는데..  
 https://dockersec.blogspot.com/2017/01/arp-spoofing-docker-containers_26.html?source=post_page-----79f345ff721f--------------------------------
+
+위험상태 표시 JS (후순위)
+https://codepen.io/devon_yu/pen/qBdOGZO
+
+루분투 vmware용 이미지 다운로드
+https://www.osboxes.org/lubuntu/#lubuntu-22-04-vmware
+
+칼리 키보드 프리징 해결
+https://www.youtube.com/watch?v=KnZOJDxIlHo
+https://superuser.com/questions/1707245/kali-linux-not-taking-keyboard-input-at-login-page-when-running-on-vmware
+- 루분투도 그러네;;
+    https://lawmin.tistory.com/297
+    https://support.microsoft.com/ko-kr/topic/%ED%99%95%EC%9E%A5%EC%84%B1-%EB%86%92%EC%9D%80-dpi-%EC%9E%A5%EC%B9%98%EC%97%90-%EB%8C%80-%ED%95%9C-%EB%AC%B8%EC%A0%9C%EB%8A%94-windows-508483cd-7c59-0d08-12b0-960b99aa347d
+- 또 안되면 해보기(칼리 해결법부터 해보고)
+https://kyuri107.tistory.com/entry/vmware-%ED%82%A4%EB%B3%B4%EB%93%9C-%EB%A8%B9%ED%86%B5
+https://discourse.ubuntu-kr.org/t/vmware/10323
+
+vmdk 파일 vmware에 올리기
+https://yarbong.tistory.com/4
+vmdx로 있는거 싹날리고 올리면 됨.
+
+open cv 다루기(이미지 검출)
+https://076923.github.io/posts/Python-opencv-37/
+https://bebeyum.tistory.com/93
+https://iagreebut.tistory.com/77
+
+pip 타임아웃 되는 경우 해결
+https://m.blog.naver.com/dbswldud15/221998277839
+
+sudo apt-get dist-upgrade
+ 나중에 하자...

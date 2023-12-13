@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>웹페이지</title>
+    <style>
+        /* CSS 스타일 작성 */
+        /* 로고 이미지 스타일 */
+        #logo {
+            width: 100px;
+            height: 100px;
+        }
+        /* 네비게이션 바 스타일 */
+        #navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        /* 버튼 스타일 */
+        .button {
+            padding: 10px 20px;
+            background-color: #ccc;
+            border: none;
+            color: #000;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .button.active {
+            background-color: #f00;
+            color: #fff;
+        }
+        /* 큰 사진 스타일 */
+        #big-image {
+            width: 800px;
+            height: 600px;
+        }
+        /* 아이콘 스타일 */
+        #icon {
+            /* 아이콘 스타일 속성 설정 */
+        }
+    </style>
+    
+</head>
+<body>
+    <!-- 로고 이미지 -->
+    <img id="logo" src="로고이미지주소" alt="로고">
+
+    <!-- 네비게이션 바 -->
+    <div id="navbar">
+        <div>소통 정보</div>
+        <div>돌발/사고 정보</div>
+        <div>개방 데이터</div>
+        <div>센터 소개</div>
+    </div>
+
+    <!-- 버튼 4개 -->
+    <div>
+        <button class="button" onclick="toggleButton(1)">버튼 1</button>
+        <button class="button" onclick="toggleButton(2)">버튼 2</button>
+        <button class="button" onclick="toggleButton(3)">버튼 3</button>
+        <button class="button" onclick="toggleButton(4)">버튼 4</button>
+    </div>
+
+    <!-- 엄청 큰 사진 -->
+    <div>
+        <img id="big-image" src="큰사진이미지주소" alt="엄청 큰 사진">
+    </div>
+
+    <!-- 아이콘 -->
+    <div id="icon">
+        <!-- 아이콘 이미지를 추가하세요 -->
+    </div>
+    
+    <script>
+        let activeButton = null;
+
+        function toggleButton(buttonId) {
+            const button = document.querySelector(`button:nth-child(${buttonId})`);
+
+            if (button.classList.contains('active')) {
+                button.classList.remove('active');
+                activeButton = null;
+            } else {
+                if (activeButton) {
+                    activeButton.classList.remove('active');
+                }
+                button.classList.add('active');
+                activeButton = button;
+            }
+        }
+    </script>
+</body>
+</html>

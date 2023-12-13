@@ -5,9 +5,12 @@ app = Flask(__name__)
 
 #camera = cv2.VideoCapture('rtsp://localhost:8554/live')
 
-def gen_frames():  
-    camera = cv2.VideoCapture('rtsp://172.36.0.2:60554/live')
+def gen_frames():
+    print('help')
+    #camera = cv2.VideoCapture('rtsp://172.36.0.2:60554/live')
+    #camera = cv2.VideoCapture('rtsp://172.19.0.2:60554/live')
     #camera = cv2.VideoCapture('rtsp://127.0.0.1:60554/live')
+    camera = cv2.VideoCapture('rtsp://192.168.3.222:60554/live')
     while True:
         success, frame = camera.read()  # read the camera frame
         if not success:
