@@ -75,6 +75,7 @@ Issue
 
 To do
 -------------
+0. 풀이 검증.......
 1. 사고발생 눌렀을 때, 사고발생 영상이 뜨도록 구현하기(현재는 rtsp 도커에서 수동으로 ./accident.sh 실행시켜야 함.)
 2. 웹 사이트 한눈에 보이게 세팅하기
 3. (선택) 종민 멘토님이 알려주신 사이트(http://211.48.17.181:8084/)처럼 도로침수 통합관리 시스템이든, 실시간 도시방범 시스템이든, 그럴싸한 관제 시스템처럼 보이게 꾸며야 할까?
@@ -154,31 +155,3 @@ https://tkdguq0110.tistory.com/entry/fragrouter
 
 도커에서 된다는데..  
 https://dockersec.blogspot.com/2017/01/arp-spoofing-docker-containers_26.html?source=post_page-----79f345ff721f--------------------------------
-
-위험상태 표시 JS (후순위)
-https://codepen.io/devon_yu/pen/qBdOGZO
-
-루분투 vmware용 이미지 다운로드
-https://www.osboxes.org/lubuntu/#lubuntu-22-04-vmware
-
-칼리 키보드 프리징 해결
-https://www.youtube.com/watch?v=KnZOJDxIlHo
-https://superuser.com/questions/1707245/kali-linux-not-taking-keyboard-input-at-login-page-when-running-on-vmware
-- 루분투도 그러네;;
-    https://lawmin.tistory.com/297
-    https://support.microsoft.com/ko-kr/topic/%ED%99%95%EC%9E%A5%EC%84%B1-%EB%86%92%EC%9D%80-dpi-%EC%9E%A5%EC%B9%98%EC%97%90-%EB%8C%80-%ED%95%9C-%EB%AC%B8%EC%A0%9C%EB%8A%94-windows-508483cd-7c59-0d08-12b0-960b99aa347d
-- 또 안되면 해보기(칼리 해결법부터 해보고)
-https://kyuri107.tistory.com/entry/vmware-%ED%82%A4%EB%B3%B4%EB%93%9C-%EB%A8%B9%ED%86%B5
-https://discourse.ubuntu-kr.org/t/vmware/10323
-
-vmdk 파일 vmware에 올리기
-https://yarbong.tistory.com/4
-vmdx로 있는거 싹날리고 올리면 됨.
-
-open cv 다루기(이미지 검출)
-https://076923.github.io/posts/Python-opencv-37/
-https://bebeyum.tistory.com/93
-https://iagreebut.tistory.com/77
-
-pip 타임아웃 되는 경우 해결(잘 안됨 -> 브릿지가 문제. nat으로 바꾸고 진행)
-https://m.blog.naver.com/dbswldud15/221998277839
