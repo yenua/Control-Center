@@ -97,6 +97,18 @@ python3 -m http.server 9000
 
 python3 -m http.server 9000 --bind 192.168.3.235
 
+arpspoof -i ens33 -t 192.168.3.223 192.168.3.222
+
+arpspoof -i ens33 -t 192.168.1.223 192.168.1.222
+
+arpspoof -i ens33 -t 192.168.1.23 192.168.1.22
+
+arpspoof -i ens33 -t 192.168.210.129 192.168.210.130
+
+arpspoof -i ens33 -t 192.168.210.129 192.168.210.130
+
+arpspoof -i ens33 -t 192.168.183.138 192.168.183.137
+
 arpspoof -i eth0 -t 172.36.0.3 172.36.0.2 &
 
 arpspoof -i eth0 -t 172.36.0.4 172.19.0.3
@@ -120,7 +132,20 @@ HACKTIZEN{15_y4m@ngc1ty_re411_5@fe?}
 
 IP alias
 - cd /etc/sysconfig/network-scripts
+
+나중에 하자...
 apt-get dist-upgrade
+
+네트워크 설정하는 방법 알려주기..
+- vm 네트워크 관리자, 루분투 네트워크 설정
+
+칼리 한국 서버로 변경
+sudo nano /etc/apt/sources.list
+http://mirror.amuksa.com/kali
+
+cain & abel 
+https://www.youtube.com/watch?v=Y2fhWtZedTQ
+
 References
 -------------
 https://www.caverion.com/smart-city/  
@@ -155,8 +180,5 @@ https://076923.github.io/posts/Python-opencv-37/
 https://bebeyum.tistory.com/93
 https://iagreebut.tistory.com/77
 
-pip 타임아웃 되는 경우 해결
+pip 타임아웃 되는 경우 해결(잘 안됨 -> 브릿지가 문제. nat으로 바꾸고 진행)
 https://m.blog.naver.com/dbswldud15/221998277839
-
-sudo apt-get dist-upgrade
- 나중에 하자...

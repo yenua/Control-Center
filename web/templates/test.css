@@ -1,6 +1,7 @@
 body {
     margin: 0;
     padding: 0;
+    font: normal 3vw/1 "Montserrat", sans-serif;
 }
 .navbar {
     height: 9vh;
@@ -10,6 +11,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    
+    font: normal 3vw/1 "Montserrat", sans-serif;
 }
 .navbar-logo {
     display: flex;
@@ -73,4 +76,33 @@ body {
     border: none;
     cursor: pointer;
     background-color: transparent; /* 배경을 투명하게 설정 */
+}
+/* 팝업 창 스타일 */
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 600px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    z-index: 9999;
+    display: none;
+}
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f0f0f0;
+}
+.popup-title {
+    font-weight: bold;
+}
+.popup-close {
+    cursor: pointer;
+}
+.popup-content {
+    padding: 20px;
 }

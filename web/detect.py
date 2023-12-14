@@ -10,9 +10,10 @@ app = Flask(__name__)
 template = cv2.imread('./static/img/accident.png', cv2.IMREAD_COLOR)
 template_gray = cv2.cvtColor(template, cv2.COLOR_BGR2GRAY)
 
-start_time = 0
-current_time = 0    
+start_time = time.time()
+current_time = time.time()
 delay_start_time = None
+status = False
 
 def gen_frames():
     global start_time
@@ -38,7 +39,7 @@ def gen_frames():
             if delay_start_time == None:
                 delay_start_time = time.time()
             delay_current_time = time.time()
-            if delay_current_time - delay_start_time >= 5:
+            if delay_current_time - delay_start_time >= 3:
                 # Match template and find locations of matches
                 buffer = cv2.imdecode(buffer, cv2.IMREAD_COLOR)
                 gray = cv2.cvtColor(buffer, cv2.COLOR_BGR2GRAY)
@@ -69,7 +70,10 @@ def gen_frames():
 def index():
     global start_time
     global current_time
-    if current_time - start_time >= 40:
+    global status
+    if current_time - start_time >= 60:
+        status = True
+    if status == True:
         print('flag!')
         return render_template('index2.html', flag='HACKTIZEN{15_y4m@ngc1ty_re411_5@fe?}')
     else:
