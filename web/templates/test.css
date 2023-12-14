@@ -77,32 +77,54 @@ body {
     cursor: pointer;
     background-color: transparent; /* 배경을 투명하게 설정 */
 }
+
 /* 팝업 창 스타일 */
-.popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 500px;
-    height: 600px;
-    border: 1px solid #ccc;
-    background-color: #fff;
-    z-index: 9999;
-    display: none;
+.view-body {
+    margin: 0;
+    padding: 0;
 }
-.popup-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: #f0f0f0;
+
+.popup-container {
+    width: 450px;
+    height: 486px;
+    background-color: white;
+    border-bottom: 1px solid black;
+    position: relative;
 }
-.popup-title {
+
+.navigation-bar {
+    height: 50px;
+    background-color: #FFF;
+    color: #000;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
 }
-.popup-close {
+
+.title {
+    font-size: 20px;
+}
+
+.close-button {
     cursor: pointer;
+    font-size: 20px;
 }
-.popup-content {
+
+.content {
     padding: 20px;
 }
+
+.image {
+    width: 400px;
+    height: 300px;
+    background-color: lightgray;
+    margin-bottom: 20px;
+}
+
+.text {
+    height: 70px;
+    background-color: lightblue;
+}
+

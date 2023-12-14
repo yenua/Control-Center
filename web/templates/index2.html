@@ -8,30 +8,17 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 offset-lg-2">
-                <h3 class="mt-5">관제센터 엿보기</h3>
+                <h4 class="mt-5">관제센터 엿보기</h4>
                 <div class="image-and-button">
-                    <img src="{{ url_for('video_feed') }}">
+                        <img src="{{ url_for('video_feed') }}" style="height: 720px; weight: 960px;">
                     <div class="button-container">
                         <h6>사고 발생</h6>
                         <button class="push--skeuo"></button>
                     </div>
                 </div>
-                {{flag}}
+                <h7>{{flag}}</h7>
             </div>
         </div>
     </div>
-
-    <script>
-        // 10초마다 페이지를 새로고침하는 함수
-        function refreshPage() {
-            location.reload(true); // true를 전달하여 캐시를 무시하고 서버에서 새로운 데이터를 가져옴
-        }
-
-        // 페이지 로드 후 시작
-        window.onload = function() {
-            // 10초마다 페이지 새로고침
-            setInterval(refreshPage, 10000); // 10초(10000ms) 간격으로 호출
-        };
-    </script>
 </body>
 </html>

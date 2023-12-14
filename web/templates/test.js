@@ -43,29 +43,12 @@ function toggleButton(buttonId) {
     }
 }
 
-// 핀 버튼 클릭 이벤트 핸들러 등록
-document.getElementById("pin1").addEventListener("click", function() {
-    openPopup("새 탭 팝업", "https://example.com");
-});
-document.getElementById("pin2").addEventListener("click", function() {
-    openPopup("새 탭 팝업", "https://example.com");
-});
-document.getElementById("pin3").addEventListener("click", function() {
-    openPopup("새 탭 팝업", "https://example.com");
-});
-document.getElementById("pin4").addEventListener("click", function() {
-    openPopup("새 탭 팝업", "https://example.com");
-});
-document.getElementById("pin5").addEventListener("click", function() {
-    openPopup("새 탭 팝업", "https://example.com");
-});
-
-// 팝업 창 열기
+// 새 창으로 팝업 열기
 function openViewPage(buttonId) {
     var form = document.createElement('form');
     form.method = 'POST';
-    form.action = '/view';
-    form.target = '_blank'; // 새 탭에서 열릴 수 있도록 target 속성을 설정
+    form.action = 'view.html';
+    form.target = 'popup'; // 팝업 창의 이름을 설정
     
     var input = document.createElement('input');
     input.type = 'hidden';
@@ -75,6 +58,12 @@ function openViewPage(buttonId) {
     form.appendChild(input);
     document.body.appendChild(form);
     
+    var width = 450;
+    var height = 499;
+    var left = (window.innerWidth - width) / 2; // 화면 가로 중앙에 위치
+    var top = (window.innerHeight - height) / 2; // 화면 세로 중앙에 위치
+    var options = 'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top;
+    var popup = window.open('', 'popup', options); // 팝업 창 열기
     form.submit();
     document.body.removeChild(form);
 }
