@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>CCTV Viewer</title>
-    <link rel="stylesheet" href="test.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
 </head>
 <body class="view-body">
     <div class="popup-container">
@@ -12,8 +12,8 @@
         </div>
         <hr style="border-color: black;">
         <div class="content">
-            <div class="image"><img src=accident.png style="width: 400px; height: 300px;"></div>
-            <div class="text">텍스트 한 줄</div>
+            <div class="image"><img src="{{ url_for('video_feed') }}"" style="width: 400px; height: 300px;"></div>
+            <div class="text">{{flag}}</div>
         </div>
     </div>
     

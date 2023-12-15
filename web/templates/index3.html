@@ -2,13 +2,13 @@
 <html>
 <head>
     <title>웹페이지</title>
-    <link rel="stylesheet" href="test.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
 </head>
 <body>
     <!-- 네비게이션 바 -->
     <div class="navbar">
         <div class="navbar-logo">
-            <img src="../static/img/title.png" alt="로고">
+            <img src="{{ url_for('static', filename='img/title.png') }}" alt="로고">
         </div>
         <div class="navbar-menu">
             <div class="navbar-menu-item active" onclick="location.reload(true);">CCTV 상황 정보</div>
@@ -34,6 +34,6 @@
         <button id="pin4" class="pin-button" onclick="openViewPage(4)"></button>
         <button id="pin5" class="pin-button" onclick="openViewPage(5)"></button>
     </div>
-    <script src=test.js></script>
+    <script src="{{ url_for('static', filename='page.js') }}"></script>
 </body>
 </html>
